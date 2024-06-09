@@ -73,34 +73,43 @@ exports.login = (req, res, next) => {
     });
 };
 
-// controller user profile
-exports.userProfile = (req, res, next) => {
-    const { name, email, id } = req.body;
+// get user profile with _id params
+exports.userProfile = async (req, res, next) => {
+    const { _id } = req.query;
 
-    // Validate input
-    if (!name || !email || !id) {
-        return res.status(400).send({
+    try {
+        if (!_id) {
+            return res.status(404).json({
+                error: true,
+                message: "ID parameter is required"
+            });
+        }
+
+        const userProfile = await User.find({ _id: _id }).select('-date');
+
+        if (userProfile.length === 0) {
+            return res.status(404).json({
+                error: true,
+                message: "User not found"
+            });
+        }
+        return res.status(200).json({
+            error: false,
+            message: "User profile fetched successfully",
+            profile: userProfile
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
             error: true,
-            message: "Missing required fields in request body"
+            message: "An internal server error occurred. Please try again later."
         });
     }
-
-    // Send Response
-    return res.status(200).send({
-        error: false,
-        message: "User profile fetched successfully",
-        profile: {
-            id,
-            name,
-            email,
-        }
-    });
 };
 
-
-// Function to update profile
+// Function update profile
 async function updateProfile(params) {
-    const { id, newName, newPassword } = params;
+    const { email, newName, newPassword } = params;
 
     try {
         let updateFields = { };
@@ -111,8 +120,13 @@ async function updateProfile(params) {
             updateFields.password = hashedPassword;
         }
 
-        // Find the user by userId and update the fields
-        const updatedUser = await User.findByIdAndUpdate(id, updateFields, { new: true });
+        // find user by email and update
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(user._id, updateFields, { new: true });
         return updatedUser;
     } catch (error) {
         throw error;
@@ -121,10 +135,10 @@ async function updateProfile(params) {
 
 // controller update profile
 exports.updateProfile = async (req, res, next) => {
-    const { id, newName, newPassword } = req.body;
+    const { email, newName, newPassword } = req.body;
 
-    // Validate input
-    if (!id || (!newName && !newPassword)) {
+    // input validation
+    if (!email || (!newName && !newPassword)) {
         return res.status(400).send({
             error: true,
             message: "Missing required fields in request body"
@@ -132,7 +146,7 @@ exports.updateProfile = async (req, res, next) => {
     }
 
     try {
-        const updatedUser = await updateProfile({ id, newName, newPassword });
+        const updatedUser = await updateProfile({ email, newName, newPassword });
         return res.status(200).send({
             error: false,
             message: "User profile updated successfully",
@@ -142,3 +156,49 @@ exports.updateProfile = async (req, res, next) => {
         return next(error);
     }
 };
+
+// // Function to update profile
+// async function updateProfile(params) {
+//     const { email, newName, newPassword } = params;
+
+//     try {
+//         let updateFields = { };
+//         if(newName) updateFields.name = newName;
+//         if(newPassword) {
+//             const salt = bcryptjs.genSaltSync(10);
+//             const hashedPassword = bcryptjs.hashSync(newPassword, salt);
+//             updateFields.password = hashedPassword;
+//         }
+
+//         // Find the user by userId and update the fields
+//         const updatedUser = await User.findByIdAndUpdate(User._id, updateFields, { new: true });
+//         return updatedUser;
+//     } catch (error) {
+//         throw error;
+//     }
+// };
+
+
+// // controller update profile
+// exports.updateProfile = async (req, res, next) => {
+//     const { id, newName, newPassword } = req.body;
+
+//     // Validate input
+//     if (!id || (!newName && !newPassword)) {
+//         return res.status(400).send({
+//             error: true,
+//             message: "Missing required fields in request body"
+//         });
+//     }
+
+//     try {
+//         const updatedUser = await updateProfile({ id, newName, newPassword });
+//         return res.status(200).send({
+//             error: false,
+//             message: "User profile updated successfully",
+//             profile: updatedUser
+//         });
+//     } catch (error) {
+//         return next(error);
+//     }
+// };

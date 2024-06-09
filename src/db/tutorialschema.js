@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Skema Items
+// skema crafts
 const ItemsSchema = new mongoose.Schema({
     classID: String,
     class: String,
@@ -11,6 +11,7 @@ const ItemsSchema = new mongoose.Schema({
 
 });
 
+// skema stories
 const StorySchema = new mongoose.Schema({
     title: String,
     author: String,
@@ -19,6 +20,7 @@ const StorySchema = new mongoose.Schema({
     photoUrl: String
 });
 
+// skema points
 const pointSchema = new mongoose.Schema({
     userId: String,
     description: String,

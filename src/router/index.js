@@ -1,9 +1,9 @@
-const express = require('express');
-const tutorialRouter = require("./tutorialrouter");
+// const express = require('express');
+// const tutorialRouter = require("./tutorialrouter");
 
-const router = express.Router();
+// const router = express.Router();
 
-module.exports = () => {
-    tutorialRouter(router);
-    return router;
-};
+// module.exports = () => {
+//     tutorialRouter(router);
+//     return router;
+// };

@@ -21,7 +21,7 @@ const { ItemsModel , StoryModel, PointModel } = require('./src/db/tutorialschema
 
 const app = express();
 
-// Koneksi dengan mongodb
+// MongoDB connection
 const MONGO_URL = 'mongodb+srv://ReBinApp:rebinapplication@cluster0.mscxy6g.mongodb.net/rebinDB';
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL, {
@@ -47,12 +47,12 @@ app.use(
     })
 );
 
-// Middleware untuk parsing request body
+// middleware untuk parsing request body
 app.use(bodyParser.json());
 app.use(cors());
 
 
-// Endpoint untuk mendapatkan semua crafts
+// endpoint untuk mendapatkan semua crafts
 app.get("/craft/all", async (req, res) => {
   try {
     const items = await ItemsModel.find({});
@@ -66,7 +66,7 @@ app.get("/craft/all", async (req, res) => {
   }
 })
 
-// Endpoint untuk mendapatkan craft berdasarkan ID
+// endpoint untuk mendapatkan craft berdasarkan ID
 app.get('/craft/:id', (req, res) => {
   const itemId = req.params.id;
   ItemsModel.findById(itemId)
@@ -83,23 +83,20 @@ app.get('/craft/:id', (req, res) => {
     });
 });
 
-// Endpoint untuk mendapatkan craft dengan paging
+// endpoint untuk mendapatkan craft dengan paging
 app.get("/crafts", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;
   const skip = (page - 1) * limit;
 
   try {
-    // Menghitung jumlah total items
     const totalItems = await ItemsModel.countDocuments();
-    // Mengambil data dengan pagination
     const items = await ItemsModel.find({}).limit(limit).skip(skip);
 
     if (!items) {
       return res.status(404).json({ error: true, message: "Crafts not found" });
     }
 
-    // Menghitung jumlah total page
     const totalPages = Math.ceil(totalItems / limit);
 
     res.status(200).json({
@@ -116,7 +113,7 @@ app.get("/crafts", async (req, res) => {
 });
 
 
-// Endpoint untuk mendapatkan semua story
+// endpoint untuk mendapatkan semua story
 app.get("/story/all", async (req, res) => {
   try {
     const story = await StoryModel.find({});
@@ -130,7 +127,7 @@ app.get("/story/all", async (req, res) => {
   }
 })
 
-// Endpoint untuk mendapatkan story berdasarkan ID
+// endpoint untuk mendapatkan story berdasarkan ID
 app.get('/story/:id', (req, res) => {
   const storyId = req.params.id;
   StoryModel.findById(storyId)
@@ -147,23 +144,21 @@ app.get('/story/:id', (req, res) => {
     });
 });
 
-// Endpoint untuk mendapatkan story dengan paging
+
+// endpoint untuk mendapatkan story dengan paging
 app.get("/stories", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = 3;
+  const limit = 5;
   const skip = (page - 1) * limit;
 
   try {
-    // Menghitung jumlah total story
     const totalStory = await StoryModel.countDocuments();
-    // Mengambil data dengan pagination
     const stories = await StoryModel.find({}).limit(limit).skip(skip);
 
     if (!stories) {
       return res.status(404).json({ error: true, message: "Stories not found" });
     }
 
-    // Menghitung jumlah total page
     const totalPages = Math.ceil(totalStory / limit);
 
     res.status(200).json({
@@ -180,19 +175,18 @@ app.get("/stories", async (req, res) => {
 });
 
 
-// Endpoints get points history
+// endpoints untuk post points
 app.post('/points', async (req, res) => {
   try {
       const { userId, description, point } = req.body;
 
-      // Buat objek poin baru sesuai skema
       const newPoint = new PointModel({
           userId,
           description,
           point
       });
 
-      // Simpan poin baru ke dalam database
+      // simpan point ke dalam database
       const savedPoint = await newPoint.save();
 
       res.status(201).json({
@@ -210,26 +204,25 @@ app.post('/points', async (req, res) => {
 });
 
 
-// endpoint post point
+// endpoint untuk get points
 app.get('/points', async (req, res) => {
-  const { userId } = req.query; // Mengambil userId dari query parameter
+  const { userId } = req.query;
 
   try {
-      // Pastikan userId ada sebelum melakukan pencarian
       if (!userId) {
           return res.status(400).json({
               error: true,
-              message: "User ID parameter is required"
+              message: "userId parameter is required"
           });
       }
 
-      // Menggunakan userId untuk mencari poin yang sesuai
+      // userId untuk mencari poin yang sesuai
       const userPoints = await PointModel.find({ userId: userId });
 
       if (userPoints.length === 0) {
           return res.status(404).json({
               error: true,
-              message: "No points found for the given User ID"
+              message: "userId doesn't have a point yet"
           });
       }
 
