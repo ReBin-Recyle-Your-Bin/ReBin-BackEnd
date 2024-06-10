@@ -10,10 +10,8 @@ const { unless } = require('express-unless');
 
 require('dotenv').config();
 
-
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET;
-
 
 const auth = require('./middlewares/auth');
 const errors = require('./middlewares/errors');
