@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // skema crafts
 const ItemsSchema = new mongoose.Schema({
     classID: String,
-    class: String,
+    className: String,
     name: String,
     ingredients: String,
     steps: String,

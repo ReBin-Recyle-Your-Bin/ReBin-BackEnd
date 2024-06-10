@@ -64,6 +64,29 @@ app.get("/craft/all", async (req, res) => {
   }
 })
 
+// endpoint untuk mendapatkan craft berdasarkan parameter className
+app.get("/craft", async (req, res) => {
+  const { className } = req.query;
+
+  try {
+    let items;
+    if (className) {
+      items = await ItemsModel.find({ className });
+    } else {
+      items = await ItemsModel.find({});
+    }
+    
+    if (!items || items.length === 0) {
+      return res.status(404).json({ error: true, message: "Crafts not found" });
+    }
+    
+    res.status(200).json({ error: false, message: "Crafts fetched successfully", listItems: items });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: true, message: "Internal server error" });
+  }
+});
+
 // endpoint untuk mendapatkan craft berdasarkan ID
 app.get('/craft/:id', (req, res) => {
   const itemId = req.params.id;
@@ -123,7 +146,7 @@ app.get("/story/all", async (req, res) => {
     console.error(err);
     res.status(500).json({ error: true, message: "Internal server error. Please try again." });
   }
-})
+});
 
 // endpoint untuk mendapatkan story berdasarkan ID
 app.get('/story/:id', (req, res) => {
