@@ -25,6 +25,7 @@ const pointSchema = new mongoose.Schema({
     userId: String,
     description: String,
     point: Number,
+    status: String,
     date: {
         type: Date,
         default: Date.now(),
@@ -39,10 +40,32 @@ pointSchema.set("toJSON", {
     },
 });
 
+// skema history
+const historySchema = new mongoose.Schema({
+    userId: String,
+    accuracy: String,
+    label: String,
+    date: {
+        type: Date,
+        default: Date.now(),
+    }
+});
+
+historySchema.set("toJSON", {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
+    },
+});
+
+
+const HistoryModel = mongoose.model("History", historySchema);
+
 const PointModel = mongoose.model('Point', pointSchema);
 
 const ItemsModel = mongoose.model("Items", ItemsSchema);
 
 const StoryModel = mongoose.model("Story", StorySchema);
 
-module.exports = { ItemsModel, StoryModel, PointModel };
+module.exports = { ItemsModel, StoryModel, PointModel, HistoryModel};

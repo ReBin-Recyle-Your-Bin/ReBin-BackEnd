@@ -15,7 +15,7 @@ const secretKey = process.env.JWT_SECRET;
 
 const auth = require('./middlewares/auth');
 const errors = require('./middlewares/errors');
-const { ItemsModel , StoryModel, PointModel } = require('./src/db/tutorialschema');
+const { ItemsModel , StoryModel, PointModel, HistoryModel } = require('./src/db/tutorialschema');
 
 const app = express();
 
@@ -196,15 +196,16 @@ app.get("/stories", async (req, res) => {
 });
 
 
-// endpoints untuk post points
+// endpoint untuk post points
 app.post('/points', async (req, res) => {
   try {
-      const { userId, description, point } = req.body;
+      const { userId, description, point, status } = req.body;
 
       const newPoint = new PointModel({
           userId,
           description,
-          point
+          point,
+          status,
       });
 
       // simpan point ke dalam database
@@ -251,6 +252,131 @@ app.get('/points', async (req, res) => {
           error: false,
           message: "Points fetched successfully",
           data: userPoints
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          error: true,
+          message: "An internal server error occurred. Please try again later."
+      });
+  }
+});
+
+// endpoint untuk post history
+app.post('/detect-waste/history', async (req, res) => {
+  try {
+      const { userId, accuracy, label } = req.body;
+
+      const newHistory = new HistoryModel({
+          userId,
+          accuracy,
+          label
+      });
+
+      // simpan history ke dalam database
+      const savedHistory = await newHistory.save();
+
+      res.status(201).json({
+          error: false,
+          message: "Detection history saved successfully",
+          data: savedHistory
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          error: true,
+          message: "An internal server error occurred. Please try again later."
+      });
+  }
+});
+
+// endpoint untuk get history
+app.get('/detect-waste/history', async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+      if (!userId) {
+          return res.status(400).json({
+              error: true,
+              message: "userId parameter is required"
+          });
+      }
+
+      // userId untuk mencari history yang sesuai
+      const userHistory = await HistoryModel.find({ userId: userId });
+
+      if (userHistory.length === 0) {
+          return res.status(404).json({
+              error: true,
+              message: "userId doesn't have a history yet"
+          });
+      }
+
+      res.status(200).json({
+          error: false,
+          message: "History fetched successfully",
+          data: userHistory
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          error: true,
+          message: "An internal server error occurred. Please try again later."
+      });
+  }
+});
+
+// endpoint untuk delete history by ID
+app.delete('/detect-waste/history/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const history = await HistoryModel.findByIdAndDelete(id);
+
+      if (!history) {
+          return res.status(404).json({
+              error: true,
+              message: "History not found"
+          });
+      }
+
+      res.status(200).json({
+          error: false,
+          message: "History deleted successfully"
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          error: true,
+          message: "An internal server error occurred. Please try again later."
+      });
+  }
+});
+
+// endpoint untuk delete seluruh history dengan parameter userId
+app.delete('/detect-waste/history', async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+      if (!userId) {
+          return res.status(400).json({
+              error: true,
+              message: "userId parameter is required"
+          });
+      }
+
+      const result = await HistoryModel.deleteMany({ userId });
+
+      if (result.deletedCount === 0) {
+          return res.status(404).json({
+              error: true,
+              message: "userId doesn't have a history yet"
+          });
+      }
+
+      res.status(200).json({
+          error: false,
+          message: "All histories deleted successfully"
       });
   } catch (error) {
       console.error(error);
