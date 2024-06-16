@@ -15,14 +15,17 @@ const secretKey = process.env.JWT_SECRET;
 
 const auth = require('./middlewares/auth');
 const errors = require('./middlewares/errors');
-const { ItemsModel , StoryModel, PointModel, HistoryModel } = require('./src/db/tutorialschema');
+const { ItemsModel , StoryModel, PointModel, HistoryModel, ChallengeModel } = require('./src/db/tutorialschema');
 
 const app = express();
+
+const port = process.env.PORT || 8080;
+const mongoUri = process.env.MONGO_URI || 'mongodb+srv://ReBinApp:rebinapplication@cluster0.mscxy6g.mongodb.net/?retryWrites=true&w=majority';
 
 // MongoDB connection
 const MONGO_URL = 'mongodb+srv://ReBinApp:rebinapplication@cluster0.mscxy6g.mongodb.net/rebinDB';
 mongoose.Promise = global.Promise;
-mongoose.connect(MONGO_URL, {
+mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(
@@ -133,6 +136,34 @@ app.get("/crafts", async (req, res) => {
   }
 });
 
+// endpoint untuk mendapatkan craft dengan paging dan limit content
+app.get("/crafting", async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  try {
+    const totalItems = await ItemsModel.countDocuments();
+    const items = await ItemsModel.find({}).limit(limit).skip(skip);
+
+    if (!items || items.length === 0) {
+      return res.status(404).json({ error: true, message: "Craft tidak ditemmukan" });
+    }
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    res.status(200).json({
+      error: false,
+      message: "Craft berhasil diambil dengan sukses",
+      totalPages: totalPages,
+      currentPage: page,
+      listItems: items
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: true, message: "Kesalahan server internal" });
+  }
+});
 
 // endpoint untuk mendapatkan semua story
 app.get("/story/all", async (req, res) => {
@@ -195,6 +226,34 @@ app.get("/stories", async (req, res) => {
   }
 });
 
+// endpoint untuk mendapatkan story dengan paging dan limit content
+app.get("/story", async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  try {
+    const totalItems = await ItemsModel.countDocuments();
+    const items = await ItemsModel.find({}).limit(limit).skip(skip);
+
+    if (!items || items.length === 0) {
+      return res.status(404).json({ error: true, message: "Story tidak ditemmukan" });
+    }
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    res.status(200).json({
+      error: false,
+      message: "Story berhasil diambil dengan sukses",
+      totalPages: totalPages,
+      currentPage: page,
+      listItems: items
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: true, message: "Kesalahan server internal" });
+  }
+});
 
 // endpoint untuk post points
 app.post('/points', async (req, res) => {
@@ -387,6 +446,20 @@ app.delete('/detect-waste/history', async (req, res) => {
   }
 });
 
+// endpoint untuk mendapatkan data challenge
+app.get("/challenge", async (req, res) => {
+  try {
+    const challenge = await ChallengeModel.find({});
+    if (!challenge) {
+      return res.status(404).json({ error: true, message: "Challenge tidak ditemukan" });
+    }
+    res.status(200).json({ error: false, message: "Challenge berhasil diambil dengan sukses", challenge});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: true, message: "Kesalahan server internal. Silakan coba lagi." });
+  }
+});
+
 
 // Jalankan server
 app.use(express.json());
@@ -394,6 +467,6 @@ app.use("/", require("./routes/users.routes"));
 app.use(errors.errorHandler);
 
 
-app.listen(process.env.port || 3000, function () {
-    console.log("server running on http://localhost:3000");
+app.listen(process.env.port || 8080, function () {
+    console.log(`Server running on ${8080}`);
 });

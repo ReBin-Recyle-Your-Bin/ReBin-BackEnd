@@ -59,6 +59,16 @@ historySchema.set("toJSON", {
     },
 });
 
+// skema challenge
+const challengeSchema = new mongoose.Schema({
+    photoUrl: String,
+    point: Number,
+    title: String,
+    description: String,
+    expired: String
+});
+
+const ChallengeModel = mongoose.model("Challenge", challengeSchema);
 
 const HistoryModel = mongoose.model("History", historySchema);
 
@@ -68,4 +78,4 @@ const ItemsModel = mongoose.model("Items", ItemsSchema);
 
 const StoryModel = mongoose.model("Story", StorySchema);
 
-module.exports = { ItemsModel, StoryModel, PointModel, HistoryModel};
+module.exports = { ItemsModel, StoryModel, PointModel, HistoryModel, ChallengeModel };
