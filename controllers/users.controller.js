@@ -13,7 +13,7 @@ exports.register = (req, res, next) => {
     if (!name || !email || !password) {
         return res.status(400).send({
             error: true,
-            message: "Invalid input. Please provide a valid name, email, and password"
+            message: "Input tidak valid. Silahkan masukkan nama, email, dan password yang valid"
         });
     }
 
@@ -21,7 +21,7 @@ exports.register = (req, res, next) => {
     if (!validator.isEmail(email)) {
         return res.status(400).send({
             error: true,
-            message: "Invalid email format",
+            message: "Invalid format email",
         });
     }
 
@@ -29,7 +29,7 @@ exports.register = (req, res, next) => {
     if (password.length < 8) {
         return res.status(400).send({
             error: true,
-            message: "Password must be at least 8 characters long",
+            message: "Password harus minimal 8 karakter",
         });
     }
 
@@ -42,7 +42,7 @@ exports.register = (req, res, next) => {
         }
         return res.status(200).send({
             error: false,
-            message: "User created",
+            message: "User berhasil dibuat",
         });
     });
 };
@@ -56,18 +56,18 @@ exports.login = (req, res, next) => {
             if (error.status === 400) {
                 return res.status(400).send({
                     error: true,
-                    message: "Invalid email or password."
+                    message: "Invalid email atau password"
                 });
             } else {
                 return res.status(500).send({
                     error: true,
-                    message: "An internal server error occurred. Please try again later."
+                    message: "Kesalahan server internal. Silahkan coba lagi nanti"
                 });
             }
         }
         return res.status(200).send({
             error: false,
-            message: "Success",
+            message: "Login berhasil!",
             data: result,
         });
     });
@@ -81,7 +81,7 @@ exports.userProfile = async (req, res, next) => {
         if (!_id) {
             return res.status(404).json({
                 error: true,
-                message: "ID parameter is required"
+                message: "Dibutuhkan parameter ID"
             });
         }
 
@@ -90,19 +90,19 @@ exports.userProfile = async (req, res, next) => {
         if (userProfile.length === 0) {
             return res.status(404).json({
                 error: true,
-                message: "User not found"
+                message: "User tidak ditemukan"
             });
         }
         return res.status(200).json({
             error: false,
-            message: "User profile fetched successfully",
+            message: "User profile berhasil diambil",
             profile: userProfile
         });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
             error: true,
-            message: "An internal server error occurred. Please try again later."
+            message: "Kesalahan server internal. Silahkan coba lagi nanti"
         });
     }
 };
@@ -123,7 +123,7 @@ async function updateProfile(params) {
         // find user by email and update
         const user = await User.findOne({ email: email });
         if (!user) {
-            throw new Error('User not found');
+            throw new Error('User tidak ditemukan');
         }
 
         const updatedUser = await User.findByIdAndUpdate(user._id, updateFields, { new: true });
@@ -141,7 +141,7 @@ exports.updateProfile = async (req, res, next) => {
     if (!email || (!newName && !newPassword)) {
         return res.status(400).send({
             error: true,
-            message: "Missing required fields in request body"
+            message: "Request body tidak lengkap. Silahkan periksa kembali"
         });
     }
 
@@ -149,7 +149,7 @@ exports.updateProfile = async (req, res, next) => {
         const updatedUser = await updateProfile({ email, newName, newPassword });
         return res.status(200).send({
             error: false,
-            message: "User profile updated successfully",
+            message: "User profile berhasil diperbarui",
             profile: updatedUser
         });
     } catch (error) {

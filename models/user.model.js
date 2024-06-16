@@ -14,7 +14,7 @@ const userSchema = new Schema({
         unique: true,
         validate: {
             validator: validator.isEmail,
-            message: 'Email address is not valid'
+            message: 'Email tidak valid'
         }
     },
     password: {

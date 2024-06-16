@@ -30,7 +30,7 @@ mongoose.connect(MONGO_URL, {
         console.log('Connected to database');
     },
     (error) => {
-        console.log('Not connected to database: ' + error);
+        console.log('Not connected to database:' + error);
     }
 );
 
@@ -55,12 +55,12 @@ app.get("/craft/all", async (req, res) => {
   try {
     const items = await ItemsModel.find({});
     if (!items) {
-      return res.status(404).json({ error: true, message: "Crafts not found" });
+      return res.status(404).json({ error: true, message: "Craft tidak ditemmukan" });
     }
-    res.status(200).json({ error: false, message: "Crafts fetched successfully", listItems: items });
+    res.status(200).json({ error: false, message: "Craft berhasil diambil dengan sukses", listItems: items });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: true, message: "Internal server error" });
+    res.status(500).json({ error: true, message: "Kesalahan server internal" });
   }
 })
 
@@ -77,13 +77,13 @@ app.get("/craft", async (req, res) => {
     }
     
     if (!items || items.length === 0) {
-      return res.status(404).json({ error: true, message: "Crafts not found" });
+      return res.status(404).json({ error: true, message: "Craft tidak ditemmukan" });
     }
     
-    res.status(200).json({ error: false, message: "Crafts fetched successfully", listItems: items });
+    res.status(200).json({ error: false, message: "Craft berhasil diambil dengan sukses", listItems: items });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: true, message: "Internal server error" });
+    res.status(500).json({ error: true, message: "Kesalahan server internal" });
   }
 });
 
@@ -93,14 +93,14 @@ app.get('/craft/:id', (req, res) => {
   ItemsModel.findById(itemId)
    .then(item => {
       if (item) {
-        res.status(200).json({ error: false, message: "Craft fetched successfully", item });
+        res.status(200).json({ error: false, message: "Craft berhasil diambil dengan sukses", item });
       } else {
-        res.status(404).json({ error: true, message: "Craft not found" });
+        res.status(404).json({ error: true, message: "Craft tidak ditemmukan" });
       }
     })
    .catch(err => {
       console.log(err);
-      res.status(500).json({ error:true, message: "Internal server error" });
+      res.status(500).json({ error:true, message: "Kesalahan server internal" });
     });
 });
 
@@ -115,21 +115,21 @@ app.get("/crafts", async (req, res) => {
     const items = await ItemsModel.find({}).limit(limit).skip(skip);
 
     if (!items) {
-      return res.status(404).json({ error: true, message: "Crafts not found" });
+      return res.status(404).json({ error: true, message: "Craft tidak ditemmukan" });
     }
 
     const totalPages = Math.ceil(totalItems / limit);
 
     res.status(200).json({
       error: false,
-      message: "Crafts fetched successfully",
+      message: "Craft berhasil diambil dengan sukses",
       totalPages: totalPages,
       currentPage: page,
       listItems: items
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: true, message: "Internal server error" });
+    res.status(500).json({ error: true, message: "Kesalahan server internal" });
   }
 });
 
@@ -139,12 +139,12 @@ app.get("/story/all", async (req, res) => {
   try {
     const story = await StoryModel.find({});
     if (!story) {
-      return res.status(404).json({ error: true, message: "Stories not found" });
+      return res.status(404).json({ error: true, message: "Story tidak ditemukan" });
     }
-    res.status(200).json({ error: false, message: "Stories fetched successfully", listStory: story });
+    res.status(200).json({ error: false, message: "Story berhasil diambil dengan sukses", listStory: story });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: true, message: "Internal server error. Please try again." });
+    res.status(500).json({ error: true, message: "Kesalahan server internal. Silakan coba lagi." });
   }
 });
 
@@ -154,14 +154,14 @@ app.get('/story/:id', (req, res) => {
   StoryModel.findById(storyId)
     .then((story) => {
       if (story) {
-        res.status(200).json({ error: false, message: "Story fetched successfully", story });
+        res.status(200).json({ error: false, message: "Story berhasil diambil dengan sukses", story });
       } else {
-        res.status(404).json({ error: true, message: "Story not found. Please check the ID and try again." });
+        res.status(404).json({ error: true, message: "Story tidak ditemukan. Silakan periksa ID dan coba lagi." });
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ error: true, message: "An internal server error occurred. Please try again." });
+      res.status(500).json({ error: true, message: "Terjadi kesalahan server internal. Silakan coba lagi." });
     });
 });
 
@@ -177,21 +177,21 @@ app.get("/stories", async (req, res) => {
     const stories = await StoryModel.find({}).limit(limit).skip(skip);
 
     if (!stories) {
-      return res.status(404).json({ error: true, message: "Stories not found" });
+      return res.status(404).json({ error: true, message: "Story tidak ditemukan." });
     }
 
     const totalPages = Math.ceil(totalStory / limit);
 
     res.status(200).json({
       error: false,
-      message: "Stories fetched successfully",
+      message: "Story berhasil diambil dengan sukses",
       totalPages: totalPages,
       currentPage: page,
       listStory: stories
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: true, message: "Internal server error. Please try again." });
+    res.status(500).json({ error: true, message: "Terjadi kesalahan server internal. Silakan coba lagi." });
   }
 });
 
@@ -213,14 +213,14 @@ app.post('/points', async (req, res) => {
 
       res.status(201).json({
           error: false,
-          message: "Point added successfully",
+          message: "Poin berhasil ditambahkan",
           data: savedPoint
       });
   } catch (error) {
       console.error(error);
       res.status(500).json({
           error: true,
-          message: "An internal server error occurred. Please try again later."
+          message: "Terjadi kesalahan server internal. Silakan coba lagi nanti."
       });
   }
 });
@@ -234,7 +234,7 @@ app.get('/points', async (req, res) => {
       if (!userId) {
           return res.status(400).json({
               error: true,
-              message: "userId parameter is required"
+              message: "Diperlukan parameter userId"
           });
       }
 
@@ -244,20 +244,20 @@ app.get('/points', async (req, res) => {
       if (userPoints.length === 0) {
           return res.status(404).json({
               error: true,
-              message: "userId doesn't have a point yet"
+              message: "userId belum memiliki poin"
           });
       }
 
       res.status(200).json({
           error: false,
-          message: "Points fetched successfully",
+          message: "Poin berhasil diambil dengan sukses",
           data: userPoints
       });
   } catch (error) {
       console.error(error);
       res.status(500).json({
           error: true,
-          message: "An internal server error occurred. Please try again later."
+          message: "Terjadi kesalahan server internal. Silakan coba lagi nanti."
       });
   }
 });
@@ -278,14 +278,14 @@ app.post('/detect-waste/history', async (req, res) => {
 
       res.status(201).json({
           error: false,
-          message: "Detection history saved successfully",
+          message: "History deteksi berhasil disimpan",
           data: savedHistory
       });
   } catch (error) {
       console.error(error);
       res.status(500).json({
           error: true,
-          message: "An internal server error occurred. Please try again later."
+          message: "Terjadi kesalahan server internal. Silakan coba lagi nanti."
       });
   }
 });
@@ -298,7 +298,7 @@ app.get('/detect-waste/history', async (req, res) => {
       if (!userId) {
           return res.status(400).json({
               error: true,
-              message: "userId parameter is required"
+              message: "Diperlukan parameter userId"
           });
       }
 
@@ -308,20 +308,20 @@ app.get('/detect-waste/history', async (req, res) => {
       if (userHistory.length === 0) {
           return res.status(404).json({
               error: true,
-              message: "userId doesn't have a history yet"
+              message: "userId belum memiliki history"
           });
       }
 
       res.status(200).json({
           error: false,
-          message: "History fetched successfully",
+          message: "History berhasil diambil dengan sukses",
           data: userHistory
       });
   } catch (error) {
       console.error(error);
       res.status(500).json({
           error: true,
-          message: "An internal server error occurred. Please try again later."
+          message: "Terjadi kesalahan server internal. Silakan coba lagi nanti."
       });
   }
 });
@@ -336,19 +336,19 @@ app.delete('/detect-waste/history/:id', async (req, res) => {
       if (!history) {
           return res.status(404).json({
               error: true,
-              message: "History not found"
+              message: "History tidak ditemukan"
           });
       }
 
       res.status(200).json({
           error: false,
-          message: "History deleted successfully"
+          message: "History berhasil dihapus"
       });
   } catch (error) {
       console.error(error);
       res.status(500).json({
           error: true,
-          message: "An internal server error occurred. Please try again later."
+          message: "Terjadi kesalahan server internal. Silakan coba lagi nanti."
       });
   }
 });
@@ -361,7 +361,7 @@ app.delete('/detect-waste/history', async (req, res) => {
       if (!userId) {
           return res.status(400).json({
               error: true,
-              message: "userId parameter is required"
+              message: "Diperlukan parameter userId"
           });
       }
 
@@ -370,19 +370,19 @@ app.delete('/detect-waste/history', async (req, res) => {
       if (result.deletedCount === 0) {
           return res.status(404).json({
               error: true,
-              message: "userId doesn't have a history yet"
+              message: "userId belum memiliki riwayat history"
           });
       }
 
       res.status(200).json({
           error: false,
-          message: "All histories deleted successfully"
+          message: "Semua history berhasil dihapus"
       });
   } catch (error) {
       console.error(error);
       res.status(500).json({
           error: true,
-          message: "An internal server error occurred. Please try again later."
+          message: "Terjadi kesalahan server internal. Silakan coba lagi nanti."
       });
   }
 });

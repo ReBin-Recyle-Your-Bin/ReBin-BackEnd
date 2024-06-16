@@ -14,19 +14,19 @@ async function login({ email, password }, callback) {
             } else {
                 return callback({
                     status: 400, // kode status untuk kesalahan Bad Request
-                    message: "Invalid email or password."
+                    message: "Invalid email atau password"
                 });
             }
         } else {
             return callback({
                 status: 400, // kode status untuk kesalahan Bad Request
-                message: "Invalid email or password."
+                message: "Invalid email atau password"
             });
         }
     } catch (error) {
         return callback({
             status: 500, // kode status untuk kesalahan Internal Server Error
-            message: "An internal server error occurred. Please try again later."
+            message: "Kesalahan internal server. Silahkan coba lagi nanti"
         });
     }
 }
@@ -34,7 +34,7 @@ async function login({ email, password }, callback) {
 // function register
 async function register(params, callback) {
     if (params.email === undefined) {
-        return callback({ message: "email required!" });
+        return callback({ message: "email wajib diisi!" });
     }
 
     const user = new User(params);
@@ -42,11 +42,11 @@ async function register(params, callback) {
         await user.save();
         return callback(null, user);
     } catch (error) {
-        if (error.code === 11000) { // Jika terjadi kesalahan kunci ganda (duplicate key error)
+        if (error.code === 11000) { 
             return callback({
-                status: 409, // Kode status 409 untuk kesalahan Conflict
+                status: 409, 
                 error: true,
-                message: "Email already in use. Please use a different email."
+                message: "Email sudah digunakan. Silahkan gunakan email yang lain"
             });
         } else {
             return callback(error);
