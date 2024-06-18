@@ -9,6 +9,7 @@ const cors = require('cors');
 const { unless } = require('express-unless');
 
 require('dotenv').config();
+const uploadRoute = require('./controllers/routeUpload');
 
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET;
@@ -465,7 +466,7 @@ app.get("/challenge", async (req, res) => {
 app.use(express.json());
 app.use("/", require("./routes/users.routes"));
 app.use(errors.errorHandler);
-
+app.use("/" , uploadRoute);
 
 app.listen(process.env.port || 8080, function () {
     console.log(`Server running on ${8080}`);

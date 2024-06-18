@@ -4,3 +4,4 @@ service: default
 env_variables:
   PORT: "8080"
   MONGODB_URL: mongodb+srv://ReBinApp:rebinapplication@cluster0.mscxy6g.mongodb.net/?retryWrites=true&w=majority
+  CLOUDINARY: CLOUDINARY_URL=cloudinary://669327663364216:kxo5XlHAS5ZHMNBiq1z7J3DSWkM@dx2zd2jhw
