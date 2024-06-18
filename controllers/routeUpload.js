@@ -39,7 +39,7 @@ const userId = req.body.userId;
   })
 });
 
-// router get image by userId params
+// router get image by userId param
 router.get('/image', (req, res) => {
     const userId = req.query.userId;
 
