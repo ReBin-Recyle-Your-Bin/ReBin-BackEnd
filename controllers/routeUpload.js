@@ -4,15 +4,16 @@ const cloudinary = require("../utils/cloudinary");
 const upload = require("../middlewares/multer");
 
   
-  // Simpan data unggahan dalam memori (untuk contoh)
+// Simpan data unggahan dalam memori
 let uploadData = [];
 
+// Router post image
 router.post('/upload', upload.single('image'), function (req, res) {
 const userId = req.body.userId;
 
   if (!userId) {
     return res.status(400).json({
-      success: false,
+      error: true,
       message: "User ID is required"
     });
   }
@@ -21,7 +22,7 @@ const userId = req.body.userId;
     if(err) {
       console.log(err);
       return res.status(500).json({
-        success: false,
+        error: true,
         message: "Error"
       })
     }
@@ -31,7 +32,7 @@ const userId = req.body.userId;
     const publicId = result.public_id;
 
     res.status(200).json({
-      success: true,
+      error: false,
       message: "Gambar berhasil diunggah",
       userId,
       data: {
@@ -41,6 +42,7 @@ const userId = req.body.userId;
   })
 });
 
+// Router get image
 router.get('/image/:publicId', (req, res) => {
     const publicId = req.params.publicId;
   
@@ -54,20 +56,20 @@ router.get('/image/:publicId', (req, res) => {
           };
   
           res.status(200).json({
-            success: true,
+            error: false,
             message: "Gambar berhasil diambil",
             data: filteredData
           });
         } else {
           res.status(404).json({
-            success: false,
+            error: true,
             message: "Gambar tidak ditemukan"
           });
         }
       })
       .catch(error => {
         res.status(500).json({
-          success: false,
+          error: true,
           message: "Terjadi kesalahan server internal",
           error: error.message
         });

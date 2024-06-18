@@ -1,25 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const http = require('http');
-const dbConfig = require('./config/db.config');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const { unless } = require('express-unless');
 
 require('dotenv').config();
 const uploadRoute = require('./controllers/routeUpload');
-
-const jwt = require('jsonwebtoken');
-const secretKey = process.env.JWT_SECRET;
-
 const auth = require('./middlewares/auth');
 const errors = require('./middlewares/errors');
 const { ItemsModel , StoryModel, PointModel, HistoryModel, ChallengeModel } = require('./src/db/tutorialschema');
 
 const app = express();
-
 const port = process.env.PORT || 8080;
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://ReBinApp:rebinapplication@cluster0.mscxy6g.mongodb.net/?retryWrites=true&w=majority';
 
@@ -52,7 +47,6 @@ app.use(
 // middleware untuk parsing request body
 app.use(bodyParser.json());
 app.use(cors());
-
 
 // endpoint untuk mendapatkan semua crafts
 app.get("/craft/all", async (req, res) => {
