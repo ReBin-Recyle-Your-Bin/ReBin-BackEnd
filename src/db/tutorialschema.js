@@ -68,6 +68,16 @@ const challengeSchema = new mongoose.Schema({
     expired: String
 });
 
+// skema tukar point
+const tukarPointSchema = new mongoose.Schema({
+    photoUrl: String,
+    point: Number,
+    title: String,
+    description: String,
+});
+
+const TukarPointModel = mongoose.model("TukarPoint", tukarPointSchema);
+
 const ChallengeModel = mongoose.model("Challenge", challengeSchema);
 
 const HistoryModel = mongoose.model("History", historySchema);
@@ -78,4 +88,4 @@ const ItemsModel = mongoose.model("Items", ItemsSchema);
 
 const StoryModel = mongoose.model("Story", StorySchema);
 
-module.exports = { ItemsModel, StoryModel, PointModel, HistoryModel, ChallengeModel };
+module.exports = { ItemsModel, StoryModel, PointModel, HistoryModel, ChallengeModel, TukarPointModel };

@@ -12,7 +12,7 @@ require('dotenv').config();
 const uploadRoute = require('./controllers/routeUpload');
 const auth = require('./middlewares/auth');
 const errors = require('./middlewares/errors');
-const { ItemsModel , StoryModel, PointModel, HistoryModel, ChallengeModel } = require('./src/db/tutorialschema');
+const { ItemsModel , StoryModel, PointModel, HistoryModel, ChallengeModel, TukarPointModel } = require('./src/db/tutorialschema');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -455,6 +455,20 @@ app.get("/challenge", async (req, res) => {
   }
 });
 
+// endpoint untuk mendapatkan data challenge
+app.get("/tukar-point", async (req, res) => {
+  try {
+    const tukarpoint = await TukarPointModel.find({});
+    if (!tukarpoint) {
+      return res.status(404).json({ error: true, message: "Tukar point tidak ditemukan" });
+    }
+    res.status(200).json({ error: false, message: "Tukar point berhasil diambil dengan sukses", tukarpoint});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: true, message: "Kesalahan server internal. Silakan coba lagi." });
+  }
+});
+
 
 // Jalankan server
 app.use(express.json());
@@ -463,5 +477,6 @@ app.use(errors.errorHandler);
 app.use("/" , uploadRoute);
 
 app.listen(process.env.port || 8080, function () {
+    // console.log(`Server running on ${8080}`);
     console.log(`Server running on ${8080}`);
 });
