@@ -19,7 +19,7 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 - **POST /register** : Endpoint for registering a new user by providing the necessary information.
 - **POST /login** : Endpoint for authenticating a user by providing credentials (username and password).
 ### Users
-- **GET /user/profile?_id={userId}** : Retrieve the user's profile based on the user ID (_id).
+- **GET /user/profile?_id={userId}** : Retrieve the user's profile based on the user ID.
 - **PUT /user/profile** : Update the specified user's profile information.
 ### Craft 
 - **GET /craft/all** : Retrieve a list of all available crafts.
