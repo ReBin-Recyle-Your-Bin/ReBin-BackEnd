@@ -49,7 +49,7 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 
 **Note:** All the above endpoints require authentication, except for `POST /register` , `POST /login` and `POST /ID/predict`. To use endpoints that require authentication, you need to send the authentication token in the request header with the format `Authorization: Bearer <token>`.
 
-## Deployed Link
+## Deployment Link
 | Service | Deployed Link |
 | :-------- | :------- | 
 | BackEnd API | https://rebin-app.et.r.appspot.com |
