@@ -14,7 +14,7 @@ The issue of waste in Indonesia has become increasingly complex, with communitie
 Build RESTful APIs using Node.js and the Express framework for the backend, prepare MongoDB as the database, and deploy the backend and machine learning model on Google Cloud Platform.
  
 
-# Endpoints
+## Endpoints
 ### Login-Register
 - **POST /register** : Endpoint for registering a new user by providing the necessary information.
 - **POST /login** : Endpoint for authenticating a user by providing credentials (username and password).
@@ -58,5 +58,5 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 ## Docummentation Postman
 [Documentation Link](https://documenter.getpostman.com/view/36410448/2sA3XTdf9J#7eeb3c7c-e4c3-4803-b424-5827d055769f)
 
-## Screen Shot Docummentation
-[Screen Shot Docummentation](https://drive.google.com/drive/folders/160oviCLd6Ap6pxz8k_ff79TVIIXd7PL6?usp=sharing)
+## Screenshot Docummentation
+[Screenshot Docummentation](https://drive.google.com/drive/folders/160oviCLd6Ap6pxz8k_ff79TVIIXd7PL6?usp=sharing)
