@@ -30,7 +30,7 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 ### Story
 - **GET /story/all** : Retrieve a list of all available stories.
 - **GET /story/:id** : Retrieve the details of a story based on a specific story ID.
-- **GET /stories?page=<pagenumber>** : Retrieve a list of stories with default paging.
+- **GET /stories?page=(pagenumber)** : Retrieve a list of stories with default paging.
 - **GET /story?page=<pagenumber>&limit=<contentnumber>** : Retrieve a list of stories with paging and a limit on the number of items.
 ### Points
 - **POST /points** : Add points for a specific user.
