@@ -24,13 +24,13 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 ### Craft 
 - **GET /craft/all** : Retrieve a list of all available crafts.
 - **GET /craft/:id** : Retrieve the details of a craft based on a specific craft ID.
-- **GET /crafts?page={pagenumber}** : Retrieve a list of crafts with default paging.
+- **GET /crafts?page={pageNumber}** : Retrieve a list of crafts with default paging.
 - **GET /crafting?page={pageNumber}&limit={contentNumber}** : Retrieve a list of crafts with paging and a limit on the number of items.
 - **GET /craft?className={className}** : Retrieve a list of crafts filtered by a specific class.
 ### Story
 - **GET /story/all** : Retrieve a list of all available stories.
 - **GET /story/:id** : Retrieve the details of a story based on a specific story ID.
-- **GET /stories?page={pagenumber}** : Retrieve a list of stories with default paging.
+- **GET /stories?page={pageNumber}** : Retrieve a list of stories with default paging.
 - **GET /story?page={pageNumber}&limit={contentNumber}** : Retrieve a list of stories with paging and a limit on the number of items.
 ### Points
 - **POST /points** : Add points for a specific user.
