@@ -47,7 +47,7 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 - **GET /image?userId={userId}** : Retrieve a list of images uploaded by a specific user based on the user ID.
 - **POST /ID/predict** : Submit a request to make a prediction using a machine learning model.
 
-**Note:** All the above endpoints require authentication, except for `POST /register` , `POST /login` and `POST /ID/predict`. To use endpoints that require authentication, you need to send the authentication token in the request header with the format `Authorization: Bearer <token>`.
+**Note:** All the above endpoints require authentication, except for `POST /register` , `POST /login` and `POST /ID/predict`. To use endpoints that require authentication, you need to send the authentication token in the request header with the format `Authorization: bearer <token>`.
 
 ## Deployment Link
 | Service | Deployed Link |
@@ -55,8 +55,8 @@ Build RESTful APIs using Node.js and the Express framework for the backend, prep
 | BackEnd API | https://rebin-app.et.r.appspot.com |
 | ML Model & API | https://rebin-ml-kbd6pi6apq-et.a.run.app |
 
-## Postman Docummentation
+## Postman Documentation
 [Documentation Link](https://documenter.getpostman.com/view/36410448/2sA3XTdf9J#7eeb3c7c-e4c3-4803-b424-5827d055769f)
 
-## Screenshot Docummentation
+## Screenshot Documentation
 [Screenshot Link](https://drive.google.com/drive/folders/160oviCLd6Ap6pxz8k_ff79TVIIXd7PL6?usp=sharing)
